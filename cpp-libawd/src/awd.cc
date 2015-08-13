@@ -15,8 +15,9 @@
 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
-#include <crtdbg.h>
+
 #ifdef _DEBUG
+    #include <crtdbg.h>
    #ifndef DBG_NEW
       #define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
       #define new DBG_NEW
@@ -346,10 +347,7 @@ AWD::flatten_scene(AWDSceneBlock *cur, AWDBlockList *flat_list)
             cur->set_parent(NULL);
         }
         else{
-            bool exportThis=true;
-            if (this->exportEmtpyContainers)
-                exportThis=!cur->isEmpty();
-            if(exportThis)
+            if( !cur->isEmpty() || this->exportEmtpyContainers )
                 cur->prepare_and_add_with_dependencies(flat_list);
 
             cur->isExported=true;
